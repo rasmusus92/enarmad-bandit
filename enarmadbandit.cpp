@@ -7,61 +7,60 @@ int bets =0;
 int resultat =0;
 int satsa (){
     cout<<"Nu ska du sattsa!! Du får sattsa hur mycket du själv vill!!! Bara du har nog med pengar"<<endl;
+    cin>>bets;
+    while (bets>belopp){
+        cout<<"Du måste lära dig att läsa! Du satsade "<<bets<<" du har "<<belopp<<endl;
         cin>>bets;
-        while (bets>belopp){
-            cout<<"Du måste lära dig att läsa! Du satsade "<<bets<<" du har "<<belopp<<endl;
-            cin>>bets;
     }
     belopp=belopp-bets;
     cout<<"Bra du kan läsa så du har satsat rätt. Du satsade "<<bets<<". Och har "<<belopp<<" kvar."<<endl;
     return belopp;
 }
-int spelPl () {
-    int rader [3][3];
+void spelPl () {
+    int rader[3][3];
     for (int e=0; e<3; e++){
         for (int t=0; t<3; t++){
             rader[e][t]=rand()%3+1;
         }
     }
-    if ((rader[0][0])==(rader[1][0])&&(rader[0][0])==([2][0])){
-    resultat ++;
+    if ((rader[0][0])==(rader[1][0])&&(rader[0][0])==(rader[2][0])){
+        resultat ++;
     }
-    if ((rader[1][0])==(rader[1][1])&&(rader[1][0])==([1][2])){
-    resultat ++;
+    if ((rader[1][0])==(rader[1][1])&&(rader[1][0])==(rader[1][2])){
+        resultat ++;
     }
-    if ((rader[2][0])==(rader[2][1])&&(rader[2][0])==([2][2])){
-    resultat ++;
+    if ((rader[2][0])==(rader[2][1])&&(rader[2][0])==(rader[2][2])){
+        resultat ++;
     }
-    if ((rader[0][0])==(rader[0][1])&&(rader[0][0])==([0][2])){
-    resultat ++;
+    if ((rader[0][0])==(rader[0][1])&&(rader[0][0])==(rader[0][2])){
+        resultat ++;
     }
-    if ((rader[0][1])==(rader[1][1])&&(rader[0][1])==([1][2])){
-    resultat ++;
+    if ((rader[0][1])==(rader[1][1])&&(rader[0][1])==(rader[1][2])){
+        resultat ++;
     }
-    if ((rader[0][2])==(rader[1][2])&&(rader[0][2])==([2][2])){
-    resultat ++;
+    if ((rader[0][2])==(rader[1][2])&&(rader[0][2])==(rader[2][2])){
+        resultat ++;
     }
-    if ((rader[0][0])==(rader[1][1])&&(rader[0][0])==([2][2])){
-    resultat ++;
+    if ((rader[0][0])==(rader[1][1])&&(rader[0][0])==(rader[2][2])){
+        resultat ++;
     }
-    if ((rader[0][2])==(rader[1][1])&&(rader[0][2])==([2][0])){
-    resultat ++;
+    if ((rader[0][2])==(rader[1][1])&&(rader[0][2])==(rader[2][0])){
+        resultat ++;
     }
     for (int e=0; e<3; e++){
-    for (int t=0; t<3; t++){
-        if(rader[e][t] == 1){
-           cout<<"[Z]";
+        for (int t=0; t<3; t++){
+            if(rader[e][t] == 1){
+               cout<<"[Z]";
+            }
+            if(rader[e][t] == 2){
+               cout<<"[X]";
+            }
+            if(rader[e][t] == 3){
+               cout<<"[C]";
+            }
         }
-        if(rader[e][t] == 2){
-           cout<<"[X]";
-        }
-        if(rader[e][t] == 3){
-           cout<<"[C]";
-        }
+        cout<<endl;
     }
-    cout<<endl;
-    }
-    return rader[3][3];
 }
 
 int main () {
@@ -86,5 +85,5 @@ int main () {
     cout<<"Här kommer spelfältet! Lycka till"<<endl;
     spelPl();
     
-return 0;
+    return 0;
 }
