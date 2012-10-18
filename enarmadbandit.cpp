@@ -4,28 +4,28 @@
 using namespace std;
 int belopp;
 int bets;
-int resultat;
 
 int satsa ()
 {
     cout<<"Nu ska du satsa!! Du får sattsa hur mycket du själv vill!!! Bara du har nog med pengar"<<endl;
     if (cin>>bets) // Avoid non-integer failure
     {
-        while (bets>belopp){
+        while (bets>belopp || bets < 1){
             cout<<"Du måste lära dig att läsa! Du satsade "<<bets<<" du har "<<belopp<<endl;
             cin>>bets;
-            belopp=belopp-bets;
-            cout<<"Bra du kan läsa så du har satsat rätt. Du satsade "<<bets<<". Och har "<<belopp<<" kvar."<<endl;
-            return belopp;
         }
+        belopp = belopp - bets;
+        cout<<"Bra du kan läsa så du har satsat rätt. Du satsade "<<bets<<". Och har "<<belopp<<" kvar."<<endl;
+        return belopp;
     } else {
         cout << "Det där är inte ens en siffra. Försök igen.";
         return 0;
     }
 
 }
-void spelPl ()
+int spelPl ()
 {
+    int resultat = 0;
     int rader[3][3];
     for (int e=0; e<3; e++){
         for (int t=0; t<3; t++){
@@ -38,18 +38,24 @@ void spelPl ()
         if((rader[0][j]) == (rader[1][j]) && (rader[0][j]) == (rader[2][j]))
         // Check vertical matches
         {
-            cout << "Vertical\n";
             resultat++;
         }
 
         if((rader[j][0]) == (rader[j][1]) && (rader[j][0]) == (rader[j][2]))
         // Check horizontal matches
         {
-            cout << "Horizontal\n";
             resultat++;
         }
 
         // TODO: Diagonal?
+        if(j != 1)
+        {
+            if((rader[0][j]) == rader[1][1] &&
+                rader[0][j] == rader[2][(j+2) % 4]) // Quick and Dirty
+            {
+                resultat++;
+            }
+        }
     }
 
     for (int e=0; e<3; e++){
@@ -65,6 +71,31 @@ void spelPl ()
             }
         }
         cout<<endl;
+    }
+
+    if (resultat == 1)
+    {
+        return 2;
+    }
+    else if (resultat == 2)
+    {
+        return 4;
+    }
+    else if (resultat == 3)
+    {
+        return 8;
+    }
+    else if (resultat == 4)
+    {
+        return 16;
+    }
+    else if (resultat > 4)
+    {
+        return 128;
+    }
+    else
+    {
+        return 0;
     }
 }
 
@@ -87,9 +118,13 @@ int main () {
             cout<<"Du satte in "<<belopp<<"!"<<endl;
         }
         cout<<"Du satte in rätt! Du satte in "<<belopp<<"!"<<endl;
-        satsa();
-        cout<<"Här kommer spelfältet! Lycka till"<<endl;
-        spelPl();
+        while (belopp > 0)
+        {
+            satsa();
+            cout<<"Här kommer spelfältet! Lycka till"<<endl;
+            belopp += bets * spelPl();
+            cout << "Resultat:" << belopp << endl;
+        }
     } else {
         cout << "Hur tänkte du nu? Det där är inte ens en siffra";
         return -1;
