@@ -2,51 +2,62 @@
 #include <ctime>
 #include <cstdlib>
 using namespace std;
-int belopp =0;
-int bets =0;
-int resultat =0;
-int satsa (){
-    cout<<"Nu ska du sattsa!! Du får sattsa hur mycket du själv vill!!! Bara du har nog med pengar"<<endl;
-    cin>>bets;
-    while (bets>belopp){
-        cout<<"Du måste lära dig att läsa! Du satsade "<<bets<<" du har "<<belopp<<endl;
-        cin>>bets;
+int belopp;
+int bets;
+
+int satsa ()
+{
+    cout<<"Nu ska du satsa!! Du får sattsa hur mycket du själv vill!!! Bara du har nog med pengar"<<endl;
+    if (cin>>bets) // Avoid non-integer failure
+    {
+        while (bets>belopp || bets < 1){
+            cout<<"Du måste lära dig att läsa! Du satsade "<<bets<<" du har "<<belopp<<endl;
+            cin>>bets;
+        }
+        belopp = belopp - bets;
+        cout<<"Bra du kan läsa så du har satsat rätt. Du satsade "<<bets<<". Och har "<<belopp<<" kvar."<<endl;
+        return belopp;
+    } else {
+        cout << "Det där är inte ens en siffra. Försök igen.";
+        return 0;
     }
-    belopp=belopp-bets;
-    cout<<"Bra du kan läsa så du har satsat rätt. Du satsade "<<bets<<". Och har "<<belopp<<" kvar."<<endl;
-    return belopp;
+
 }
-void spelPl () {
+int spelPl ()
+{
+    int resultat = 0;
     int rader[3][3];
     for (int e=0; e<3; e++){
         for (int t=0; t<3; t++){
             rader[e][t]=rand()%3+1;
         }
     }
-    if ((rader[0][0])==(rader[1][0])&&(rader[0][0])==(rader[2][0])){
-        resultat ++;
+
+    for (int j=0; j<3; j++)
+    {
+        if((rader[0][j]) == (rader[1][j]) && (rader[0][j]) == (rader[2][j]))
+        // Check vertical matches
+        {
+            resultat++;
+        }
+
+        if((rader[j][0]) == (rader[j][1]) && (rader[j][0]) == (rader[j][2]))
+        // Check horizontal matches
+        {
+            resultat++;
+        }
+
+        // TODO: Diagonal?
+        if(j != 1)
+        {
+            if((rader[0][j]) == rader[1][1] &&
+                rader[0][j] == rader[2][(j+2) % 4]) // Quick and Dirty
+            {
+                resultat++;
+            }
+        }
     }
-    if ((rader[1][0])==(rader[1][1])&&(rader[1][0])==(rader[1][2])){
-        resultat ++;
-    }
-    if ((rader[2][0])==(rader[2][1])&&(rader[2][0])==(rader[2][2])){
-        resultat ++;
-    }
-    if ((rader[0][0])==(rader[0][1])&&(rader[0][0])==(rader[0][2])){
-        resultat ++;
-    }
-    if ((rader[0][1])==(rader[1][1])&&(rader[0][1])==(rader[1][2])){
-        resultat ++;
-    }
-    if ((rader[0][2])==(rader[1][2])&&(rader[0][2])==(rader[2][2])){
-        resultat ++;
-    }
-    if ((rader[0][0])==(rader[1][1])&&(rader[0][0])==(rader[2][2])){
-        resultat ++;
-    }
-    if ((rader[0][2])==(rader[1][1])&&(rader[0][2])==(rader[2][0])){
-        resultat ++;
-    }
+
     for (int e=0; e<3; e++){
         for (int t=0; t<3; t++){
             if(rader[e][t] == 1){
@@ -61,6 +72,31 @@ void spelPl () {
         }
         cout<<endl;
     }
+
+    if (resultat == 1)
+    {
+        return 2;
+    }
+    else if (resultat == 2)
+    {
+        return 4;
+    }
+    else if (resultat == 3)
+    {
+        return 8;
+    }
+    else if (resultat == 4)
+    {
+        return 16;
+    }
+    else if (resultat > 4)
+    {
+        return 128;
+    }
+    else
+    {
+        return 0;
+    }
 }
 
 int main () {
@@ -73,17 +109,27 @@ int main () {
     cout<<"Fyra rader___________16 Gånger pengarna."<<endl;
     cout<<"Fullt spelfält______128 Gånger pengarna."<<endl;
     cout<<"Nu ska du sätta in pengar"<<endl;
-    cin>>belopp;
-    cout<<"Du satte in "<<belopp<<"!"<<endl;
-    while ((belopp!=50)&&(belopp!=100)&&(belopp!=500)){
-        cout<<"LoL, Du måste sätta in rätt dude... 50, 100 eller 500"<<endl;
-        cin>>belopp;
-        cout<<"Du satte in "<<belopp<<"!"<<endl;
+
+    if (cin >> belopp) // Avoid non-int failure
+    {
+        while ((belopp!=50)&&(belopp!=100)&&(belopp!=500)){
+            cout<<"LoL, Du måste sätta in rätt dude... 50, 100 eller 500"<<endl;
+            cin>>belopp;
+            cout<<"Du satte in "<<belopp<<"!"<<endl;
+        }
+        cout<<"Du satte in rätt! Du satte in "<<belopp<<"!"<<endl;
+        while (belopp > 0)
+        {
+            satsa();
+            cout<<"Här kommer spelfältet! Lycka till"<<endl;
+            belopp += bets * spelPl();
+            cout << "Resultat:" << belopp << endl;
+        }
+    } else {
+        cout << "Hur tänkte du nu? Det där är inte ens en siffra";
+        return -1;
     }
-    cout<<"Du satte in rätt! Du satte in "<<belopp<<"!"<<endl;
-    satsa();
-    cout<<"Här kommer spelfältet! Lycka till"<<endl;
-    spelPl();
-    
+
+
     return 0;
 }
