@@ -1,5 +1,4 @@
 #include <iostream>
-#include <typeinfo>
 #include <ctime>
 #include <cstdlib>
 using namespace std;
@@ -33,29 +32,24 @@ void spelPl ()
             rader[e][t]=rand()%3+1;
         }
     }
-    if ((rader[0][0])==(rader[1][0])&&(rader[0][0])==(rader[2][0])){
-        resultat ++;
-    }
-    if ((rader[1][0])==(rader[1][1])&&(rader[1][0])==(rader[1][2])){
-        resultat ++;
-    }
-    if ((rader[2][0])==(rader[2][1])&&(rader[2][0])==(rader[2][2])){
-        resultat ++;
-    }
-    if ((rader[0][0])==(rader[0][1])&&(rader[0][0])==(rader[0][2])){
-        resultat ++;
-    }
-    if ((rader[0][1])==(rader[1][1])&&(rader[0][1])==(rader[1][2])){
-        resultat ++;
-    }
-    if ((rader[0][2])==(rader[1][2])&&(rader[0][2])==(rader[2][2])){
-        resultat ++;
-    }
-    if ((rader[0][0])==(rader[1][1])&&(rader[0][0])==(rader[2][2])){
-        resultat ++;
-    }
-    if ((rader[0][2])==(rader[1][1])&&(rader[0][2])==(rader[2][0])){
-        resultat ++;
+
+    for (int j=0; j<3; j++)
+    {
+        if((rader[0][j]) == (rader[1][j]) && (rader[0][j]) == (rader[2][j]))
+        // Check vertical matches
+        {
+            cout << "Vertical\n";
+            resultat++;
+        }
+
+        if((rader[j][0]) == (rader[j][1]) && (rader[j][0]) == (rader[j][2]))
+        // Check horizontal matches
+        {
+            cout << "Horizontal\n";
+            resultat++;
+        }
+
+        // TODO: Diagonal?
     }
 
     for (int e=0; e<3; e++){
